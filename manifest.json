@@ -1,0 +1,19 @@
+{
+  "elements": {
+    "elementBoilerplate": {
+      "settings": {
+        "name": "Element Boilerplate",
+        "metaThumbnailUrl": "[publicPath]/thumbnail-text-block.png",
+        "metaPreviewUrl": "[publicPath]/preview-text-block.jpg",
+        "metaDescription": "Simple element boildrplate for working with static text, including paragraphs, titles, bullets and even media. Simple text block is a copy of default WordPress editor."
+      }
+    }
+  },
+  "categories": {
+    "Misc": {
+      "elements": [
+        "elementBoilerplate"
+      ]
+    }
+  }
+}
