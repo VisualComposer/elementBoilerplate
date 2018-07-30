@@ -10,6 +10,19 @@
       "skinToggle": "darkTextSkin"
     }
   },
+  "color": {
+    "type": "color",
+    "access": "public",
+    "value": "#fff",
+    "options": {
+      "label": "Title color",
+      "cssMixin": {
+        "mixin": "boilerplateColorMixin",
+        "property": "color",
+        "namePattern": "[\\da-f]+"
+      }
+    }
+  },
   "darkTextSkin": {
     "type": "toggleSmall",
     "access": "public",
@@ -28,6 +41,7 @@
     "access": "protected",
     "value": [
       "output",
+      "color",
       "outputInline",
       "metaCustomId",
       "customClass"
@@ -42,17 +56,6 @@
     "value": [
       "editFormTab1",
       "designOptions"
-    ]
-  },
-  "metaBackendLabels": {
-    "type": "group",
-    "access": "protected",
-    "value": [
-      {
-        "value": [
-          "output"
-        ]
-      }
     ]
   },
   "relatedTo": {
