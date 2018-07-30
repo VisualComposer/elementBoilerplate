@@ -79,60 +79,12 @@
       "description": "Add an extra class name to the element and refer to it from Custom CSS option."
     }
   },
-  "metaPublicJs": {
-    "access": "protected",
+  "assetsLibrary": {
+    "access": "public",
     "type": "string",
-    "value": {
-      "libraries": [
-        {
-          "rules": {
-            "clickableOptions": {
-              "rule": "value",
-              "options": {
-                "value": "zoom"
-              }
-            }
-          },
-          "libPaths": [
-            "public/dist/customZoom.min.js"
-          ]
-        }
-      ]
-    }
-  },
-  "sharedAssetsLibrary": {
-    "access": "protected",
-    "type": "string",
-    "value": {
-      "libraries": [
-        {
-          "rules": {
-            "clickableOptions": {
-              "rule": "value",
-              "options": {
-                "value": "lightbox"
-              }
-            }
-          },
-          "libsNames": [
-            "lightbox"
-          ]
-        },
-        {
-          "rules": {
-            "clickableOptions": {
-              "rule": "value",
-              "options": {
-                "value": "photoswipe"
-              }
-            }
-          },
-          "libsNames": [
-            "photoswipe"
-          ]
-        }
-      ]
-    }
+    "value": [
+      "animate"
+    ]
   },
   "metaCustomId": {
     "type": "customId",
