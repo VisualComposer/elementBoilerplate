@@ -5,7 +5,7 @@
 Element is the independent part of the system which represents html based block with ability to output media and dynamic content.
 
 ## How does it work?
-The editor works with elements as React components. Thess components must be built with webpack and enqueued by API.
+The editor works with elements as React components. These components must be built with webpack and enqueued by API.
 Every element has preview, thumbnail, category and React-based component.
 
 ### Element containment 
@@ -22,6 +22,7 @@ Directory {tag} (must be renamed to src):
 - *.php files - Required php files(must be described in ../manifest.json)
 - editor.css - css files which will be used only in editor
 - style.css - css files which will be used on frontend to display content.
+- cssMixins - directory that holds POSTCSS (*.pcss) files with mixin for custom generated styles
 
 ### Requirements
 - node > 8.0, recommended latest
