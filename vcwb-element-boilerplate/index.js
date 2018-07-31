@@ -12,7 +12,12 @@ vcvAddElement(
   // css settings // css for element
   {
     css: false,
-    editorCss: require('raw-loader!./editor.css')
+    editorCss: require('raw-loader!./editor.css'),
+    cssMixins: {
+      boilerplateColorMixin: {
+        mixin: require('raw-loader!./cssMixins/boilerplateColorMixin.pcss')
+      }
+    }
   },
   // javascript callback
   ''
