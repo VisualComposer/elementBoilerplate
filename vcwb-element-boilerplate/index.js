@@ -18,7 +18,5 @@ vcvAddElement(
         mixin: require('raw-loader!./cssMixins/boilerplateColorMixin.pcss')
       }
     }
-  },
-  // javascript callback
-  ''
+  }
 )
