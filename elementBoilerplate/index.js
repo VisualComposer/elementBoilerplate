@@ -13,7 +13,7 @@ vcvAddElement(
   {
     css: false,
     editorCss: require('raw-loader!./editor.css'),
-    cssMixins: {
+    mixins: {
       boilerplateColorMixin: {
         mixin: require('raw-loader!./cssMixins/boilerplateColorMixin.pcss')
       }

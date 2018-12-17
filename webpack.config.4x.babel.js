@@ -3,6 +3,7 @@ import VirtualModulePlugin from 'virtual-module-webpack-plugin'
 import WebpackElementPlugin from './webpack.element.plugin.babel'
 
 const tag = __dirname.split(path.sep).pop()
+
 module.exports = Object.assign({}, {
   devtool: 'eval',
   mode: 'development',

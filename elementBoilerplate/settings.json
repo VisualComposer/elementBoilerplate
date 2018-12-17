@@ -2,18 +2,18 @@
   "output": {
     "type": "htmleditor",
     "access": "public",
-    "value": "<p>ElementBoilerplate API. HTML editor also the part of the editor</p>",
+    "value": "<p>ElementBoilerplate API. HTML editor is also the part of the editor</p>",
     "options": {
       "label": "Content",
       "description": "Content for text block",
       "inline": true,
-      "skinToggle": "darkTextSkin"
+      "skinToggle": "lightTextSkin"
     }
   },
   "color": {
     "type": "color",
     "access": "public",
-    "value": "#fff",
+    "value": "#000",
     "options": {
       "label": "Title color",
       "cssMixin": {
@@ -65,11 +65,6 @@
       "General"
     ]
   },
-  "metaOrder": {
-    "type": "number",
-    "access": "protected",
-    "value": 3
-  },
   "customClass": {
     "type": "string",
     "access": "public",
@@ -78,13 +73,6 @@
       "label": "Extra class name",
       "description": "Add an extra class name to the element and refer to it from Custom CSS option."
     }
-  },
-  "assetsLibrary": {
-    "access": "public",
-    "type": "string",
-    "value": [
-      "animate"
-    ]
   },
   "metaCustomId": {
     "type": "customId",

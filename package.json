@@ -5,16 +5,16 @@
   "main": "elementBoilerplate/index.js",
   "repository": {
     "type": "git",
-    "url": "git@github.com:wpbakery/vcwb-element-boilerplate.git"
+    "url": "git@github.com:VisualComposer/vcwb-element-boilerplate.git"
   },
   "scripts": {
-    "standard": "npx standard",
-    "build": "npx webpack --config webpack.config.4x.babel.js --progress --colors",
-    "build-production": "npx webpack --config webpack.config.4x.production.babel.js -p --silent",
-    "watch": "npx webpack --config webpack.config.4x.babel.js --progress --colors --watch"
+    "standard": "standard",
+    "build": "webpack --config webpack.config.4x.babel.js --progress --colors",
+    "build-production": "webpack --config webpack.config.4x.production.babel.js -p --silent",
+    "watch": "webpack --config webpack.config.4x.babel.js --progress --colors --watch"
   },
   "author": "@wpb",
-  "license": "GPL-3.0+",
+  "license": "GPL-2.0+",
   "engines": {
     "node": ">=6",
     "npm": ">=3.8"
@@ -79,7 +79,7 @@
     "babel-plugin-lodash": "3.3.2",
     "babel-plugin-rewire": "1.1.0",
     "base-64": "0.1.0",
-    "bootstrap": "4.0.0",
+    "bootstrap": "4.1.3",
     "bootstrap-webpack": "0.0.6",
     "brace": "0.11.1",
     "codemirror": "5.36.0",
