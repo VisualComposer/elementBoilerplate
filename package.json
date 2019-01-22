@@ -5,7 +5,7 @@
   "main": "elementBoilerplate/index.js",
   "repository": {
     "type": "git",
-    "url": "git@github.com:VisualComposer/vcwb-element-boilerplate.git"
+    "url": "git@github.com:VisualComposer/elementBoilerplate.git"
   },
   "scripts": {
     "standard": "standard",
