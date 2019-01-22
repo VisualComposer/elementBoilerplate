@@ -30,16 +30,14 @@ Directory {tag} (must be renamed to src):
 
 ## Installation
 - To work with the element, each element is independent
-- Run `npm install` in the element directory
-- Build via `npm run build`
+- Run `yarn install` in the element directory
+- Build via `yarn build`
 - Once the element is built it will appear in the editor
 
 ### Commands
 ```
-npm install // Install all the element dependencies (must be same as visualcomposer)
-npm run build // Build development build
-npm run watch // Watches & Build development version on file modification
-npm run build-production // Builds the minified build
-npx webpack --config=webpack.config.4x.babel.js // Same as npm run build
-npx webpack --config=webpack.config.4x.babel.produciton.js -p // Same as npm run build-production
+yarn install // Install all the element dependencies (must be same as visualcomposer)
+yarn build // Build development build
+yarn watch // Watches & Build development version on file modification
+yarn build-production // Builds the minified build
 ```
