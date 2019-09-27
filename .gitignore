@@ -63,3 +63,4 @@ typings/
 .next
 
 public/dist
+yarn.lock
