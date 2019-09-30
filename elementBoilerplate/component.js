@@ -1,6 +1,6 @@
 import React from 'react'
-import vcCake from 'vc-cake'
-const vcvAPI = vcCake.getService('api')
+import { getService } from 'vc-cake'
+const vcvAPI = getService('api')
 
 export default class ElementBoilerplate extends vcvAPI.elementComponent {
   render () {
