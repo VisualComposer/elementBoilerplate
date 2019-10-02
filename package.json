@@ -1,11 +1,11 @@
 {
-  "name": "vcwb",
-  "version": "dev",
-  "description": "Visual Composer Website Builder",
-  "main": "index.php",
+  "name": "element-boilerplate",
+  "version": "1.0.0-dev",
+  "description": "VCWB Element Boilerplate",
+  "main": "elementBoilerplate/index.js",
   "repository": {
     "type": "git",
-    "url": "git@github.com:Visualcomposer/builder.git"
+    "url": "git@github.com:VisualComposer/elementBoilerplate.git"
   },
   "author": "@visualcomposer",
   "license": "GPL-2.0+",
