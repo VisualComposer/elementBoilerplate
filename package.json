@@ -1,17 +1,12 @@
 {
-  "name": "element-boilerplate",
-  "version": "1.0.0-dev",
-  "description": "VCWB Element Boilerplate",
-  "main": "elementBoilerplate/index.js",
+  "name": "vcwb",
+  "version": "dev",
+  "license": "SEE LICENSE IN <https://visualcomposer.com/terms-of-use/>",
+  "description": "Visual Composer Website Builder",
+  "main": "index.php",
   "repository": {
     "type": "git",
-    "url": "git@github.com:VisualComposer/elementBoilerplate.git"
-  },
-  "author": "@visualcomposer",
-  "license": "GPL-2.0+",
-  "engines": {
-    "node": ">=8",
-    "npm": ">=5.8"
+    "url": "git@github.com:Visualcomposer/builder.git"
   },
   "scripts": {
     "standard": "standard --version && standard",
@@ -20,7 +15,8 @@
     "watch": "webpack --version && webpack --config=./node_modules/vc-webpack-vendors/webpack.v4.config.js --progress --colors --watch"
   },
   "devDependencies": {
-    "vc-webpack-vendors": "2.4.0"
+    "vc-webpack-vendors": "2.5.3",
+    "standard": "14.3.1"
   },
   "babel": {
     "presets": [
@@ -49,14 +45,16 @@
   },
   "resolutions": {
     "core-js": "3.2.1",
-    "postcss": "7.0.18",
-    "css-loader": "3.2.0",
+    "postcss": "7.0.25",
+    "css-loader": "3.4.0",
     "color-name": "1.1.4",
-    "eslint": "5.15.1",
+    "eslint": "6.7.2",
     "less": "3.10.3"
   },
   "browserslist": [
-    "ie >= 11",
-    "last 2 version"
+    ">1%",
+    "ios_saf 8",
+    "ie 10",
+    "ie 11"
   ]
 }

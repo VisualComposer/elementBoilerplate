@@ -1,5 +1,6 @@
 import React from 'react'
 import { getService } from 'vc-cake'
+
 const vcvAPI = getService('api')
 
 export default class ElementBoilerplate extends vcvAPI.elementComponent {
@@ -7,13 +8,13 @@ export default class ElementBoilerplate extends vcvAPI.elementComponent {
     const { id, atts, editor } = this.props
     const { output, customClass, metaCustomId } = atts // destructuring assignment for attributes from settings.json with access public
     let elementBoilerplateClasses = 'vce-element-boilerplate'
-    let wrapperClasses = 'vce-element-boilerplate-wrapper vce'
-    let customProps = {}
+    const wrapperClasses = 'vce-element-boilerplate-wrapper vce'
+    const customProps = {}
     if (typeof customClass === 'string' && customClass) {
       elementBoilerplateClasses = elementBoilerplateClasses.concat(' ' + customClass)
     }
 
-    let mixinData = this.getMixinData('boilerplateColorMixin')
+    const mixinData = this.getMixinData('boilerplateColorMixin')
     if (mixinData) {
       elementBoilerplateClasses = elementBoilerplateClasses.concat(` vce-element-boilerplate--color-${mixinData.selector}`)
     }
@@ -24,10 +25,12 @@ export default class ElementBoilerplate extends vcvAPI.elementComponent {
 
     const doAll = this.applyDO('all')
 
-    return <div className={elementBoilerplateClasses} {...editor} {...customProps}>
-      <div className={wrapperClasses} id={'el-' + id} {...doAll}>
-        {output}
+    return (
+      <div className={elementBoilerplateClasses} {...editor} {...customProps}>
+        <div className={wrapperClasses} id={'el-' + id} {...doAll}>
+          {output}
+        </div>
       </div>
-    </div>
+    )
   }
 }

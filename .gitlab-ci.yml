@@ -1,0 +1,125 @@
+image: node:10.16
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+    - node_modules/
+services:
+  - mysql:5.7.28
+variables:
+  # Configure mysql environment variables (https://hub.docker.com/_/mysql/)
+  MYSQL_DATABASE: test
+  MYSQL_ALLOW_EMPTY_PASSWORD: '1'
+
+stages:
+  - codestyle
+  - test
+  - deploy
+
+before_script:
+  ## https://docs.gitlab.com/ee/ci/ssh_keys/
+  ## Install ssh-agent if not already installed, it is required by Docker.
+  ## (change apt-get to yum if you use an RPM-based image)
+  ##
+  - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
+  ##
+  ## Run ssh-agent (inside the build environment)
+  ##
+  - eval $(ssh-agent -s)
+  ##
+  ## Create the SSH directory and give it the right permissions
+  ##
+  - mkdir -p ~/.ssh
+  - chmod 700 ~/.ssh
+  ##
+  ## Add the SSH key stored in SSH_PRIVATE_KEY variable to the agent store
+  ## We're using tr to fix line endings which makes ed25519 keys work
+  ## without extra base64 encoding.
+  ## https://gitlab.com/gitlab-examples/ssh-private-key/issues/1#note_48526556
+  ##
+  - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
+  - ssh-keyscan -H 'github.com' >> $HOME/.ssh/known_hosts
+  - ssh-keyscan -H 'gitlab.com' >> $HOME/.ssh/known_hosts
+  ##
+  ## Optionally, if you will be using any Git commands, set the user name and
+  ## and email.
+  ##
+  #- git config --global user.email "user@example.com"
+  #- git config --global user.name "User name"
+  # disable host key checking (NOTE: makes you susceptible to man-in-the-middle attacks)
+  # WARNING: use only in docker container, if you use it with shell you will overwrite your user's ssh config
+  - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
+
+codestyle:js:
+  image: node:10.16
+  stage: codestyle
+  script:
+    - yarn install
+    - yarn standard
+    - yarn build
+    - cat public/dist/element.bundle.js | grep "Cannot find module" && exit 1
+    - if [ $? -eq 0 ]; then echo "good"; exit 0; else echo "fail"; exit 1; fi
+  tags:
+    - docker
+
+codestyle:php:
+  image: visualcomposer/ci-wordpress:php7.3
+  stage: codestyle
+  script:
+    - php ci/phpcs.phar --standard=ci/ruleset.xml "$(basename $CI_PROJECT_DIR)/"
+    - ci/phpgrep-lint.sh "$(basename $CI_PROJECT_DIR)/" ci/patterns.txt
+  tags:
+    - docker
+
+test:end-2-end:
+  image: visualcomposer/ci-wordpress:gitlab
+  stage: test
+  script:
+    - if [ ! -f ./tests/cypress.json ]; then echo "no tests"; exit 0; fi;
+    - sed -i 's/..\/..\/..\/..\/../\/\/var\/www\/html\/wp-content\/plugins\/visualcomposer/g' ./tests/cypress/plugins/index.js
+    - sed -i 's/..\/..\/..\/..\/../\/\/var\/www\/html\/wp-content\/plugins\/visualcomposer/g' ./tests/cypress/support/index.js
+    # Setup mysql and apache
+    - mysql -h mysql --user="root" --execute="CREATE USER 'wpuser'@'%'; GRANT ALL PRIVILEGES ON test.* TO 'wpuser'@'%';"
+    - apachectl restart
+    # Install WordPress instance
+    - wp core config --path=/var/www/html --dbhost=mysql --dbname=test --dbuser=wpuser --allow-root
+    # Uncomment if you want to get more info about php errors in logs
+    # - sed -i "s/\$table_prefix = 'wp_';/\$table_prefix = 'wp_';\nini_set('display_errors', 1);\nini_set('display_startup_errors', 1);\nerror_reporting(E_ALL);\ndefine('WP_DEBUG', true);\ndefine('VCV_DEBUG', true);\ndefine('WP_DEBUG_LOG', '\/builds\/visualcomposer-hub\/$CI_PROJECT_NAME\/logs.log');/" /var/www/html/wp-config.php
+    - wp core install --url=http://localhost --title=Test --admin_user=admin --admin_password=12345 --admin_email=test@test.com --path=/var/www/html --allow-root --debug
+    - chmod -R 777 /var/www/html/wp-content/uploads
+    # Add Visual Composer plugin to WordPress instance
+    - cd /var/www/html/wp-content/plugins
+    - vc_latest_release_version=$(curl --silent "https://api.github.com/repos/VisualComposer/builder/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
+    - echo $vc_latest_release_version
+    - curl -OL "https://github.com/VisualComposer/builder/releases/download/$vc_latest_release_version/visualcomposer.zip"
+    - unzip ./visualcomposer.zip
+    - cd visualcomposer
+    - mkdir devElements devAddons
+    - echo "<?php VcvEnv::set('VCV_ENV_DEV_ELEMENTS', true); VcvEnv::set('VCV_ENV_DEV_ADDONS', true); VcvEnv::set('VCV_ENV_EXTENSION_DOWNLOAD', false); require_once(__DIR__ . '/env.php');" > env-dev.php
+    # Add element to project
+    - ln -s $CI_PROJECT_DIR  /var/www/html/wp-content/plugins/visualcomposer/devElements/
+    - cd ./devElements/$(basename $CI_PROJECT_DIR)/
+    - yarn install --frozen-lockfile
+    - yarn build
+    # Setup plugins and themes
+    - wp plugin uninstall akismet --path=/var/www/html --allow-root
+    - wp plugin activate --all --path=/var/www/html --allow-root
+    - wp theme install visual-composer-starter --path=/var/www/html --activate --allow-root
+    - yarn run cypress run --browser=chrome --project ./tests
+  artifacts:
+    when: on_failure
+    expire_in: 1 day
+    paths:
+      - tests/cypress/screenshots
+      - tests/cypress/videos
+      # Uncomment for php logs
+      # - logs
+
+deploying:
+  image: node:10.11.0
+  stage: deploy
+  script:
+    - "ELEMENT_TITLE=`node -e \"var manifest = require('./manifest.json');console.log(encodeURIComponent(manifest.elements[Object.keys(manifest.elements)[0]].settings.name));\"`"
+    - "ELEMENT_TAG=`node -e \"var manifest = require('./manifest.json');console.log(Object.keys(manifest.elements)[0]);\"`"
+    - "curl -X GET -H 'Content-type: application/json' \"$CI_HUB_GROUP_TEST_DOMAIN/api/inner/bundle/create?key=$CI_HUB_GROUP_ELEMENTS_BUILD_KEY&bundle=element/$ELEMENT_TAG&version=latest&name=$ELEMENT_TITLE&branch=$CI_COMMIT_REF_NAME\""
+  tags:
+    - docker

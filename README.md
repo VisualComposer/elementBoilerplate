@@ -1,6 +1,5 @@
 # VCWB Elements API
 
-
 ## What is an element
 The element is the independent part of the system which represents HTML based block with the ability to output media and dynamic content.
 
@@ -25,8 +24,8 @@ Directory {tag} (must be renamed to src):
 - cssMixins - directory that holds POSTCSS (*.pcss) files with mixin for custom generated styles
 
 ### Requirements
-- node > 8.0, recommended latest
-- PHP > 5.4, recommended latest (7.2)
+- node > 10.0, recommended latest
+- PHP > 7.0, recommended latest
 
 ## Installation
 - To work with the element, each element is independent
