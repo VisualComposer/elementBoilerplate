@@ -1,4 +1,4 @@
-image: node:10.16
+image: node:10.13.0
 cache:
   key: ${CI_COMMIT_REF_SLUG}
   paths:
@@ -9,12 +9,10 @@ variables:
   # Configure mysql environment variables (https://hub.docker.com/_/mysql/)
   MYSQL_DATABASE: test
   MYSQL_ALLOW_EMPTY_PASSWORD: '1'
-
 stages:
   - codestyle
   - test
   - deploy
-
 before_script:
   ## https://docs.gitlab.com/ee/ci/ssh_keys/
   ## Install ssh-agent if not already installed, it is required by Docker.
@@ -48,9 +46,8 @@ before_script:
   # disable host key checking (NOTE: makes you susceptible to man-in-the-middle attacks)
   # WARNING: use only in docker container, if you use it with shell you will overwrite your user's ssh config
   - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
-
 codestyle:js:
-  image: node:10.16
+  image: node:10.13.0
   stage: codestyle
   script:
     - yarn install
@@ -60,16 +57,13 @@ codestyle:js:
     - if [ $? -eq 0 ]; then echo "good"; exit 0; else echo "fail"; exit 1; fi
   tags:
     - docker
-
 codestyle:php:
-  image: visualcomposer/ci-wordpress:php7.3
+  image: wpbakery/phpcs
   stage: codestyle
   script:
     - php ci/phpcs.phar --standard=ci/ruleset.xml "$(basename $CI_PROJECT_DIR)/"
-    - ci/phpgrep-lint.sh "$(basename $CI_PROJECT_DIR)/" ci/patterns.txt
   tags:
     - docker
-
 test:end-2-end:
   image: visualcomposer/ci-wordpress:gitlab
   stage: test
@@ -98,7 +92,7 @@ test:end-2-end:
     # Add element to project
     - ln -s $CI_PROJECT_DIR  /var/www/html/wp-content/plugins/visualcomposer/devElements/
     - cd ./devElements/$(basename $CI_PROJECT_DIR)/
-    - yarn install --frozen-lockfile
+    - yarn install
     - yarn build
     # Setup plugins and themes
     - wp plugin uninstall akismet --path=/var/www/html --allow-root
@@ -113,13 +107,13 @@ test:end-2-end:
       - tests/cypress/videos
       # Uncomment for php logs
       # - logs
-
 deploying:
-  image: node:10.11.0
+  image: node:10.13.0
   stage: deploy
   script:
     - "ELEMENT_TITLE=`node -e \"var manifest = require('./manifest.json');console.log(encodeURIComponent(manifest.elements[Object.keys(manifest.elements)[0]].settings.name));\"`"
     - "ELEMENT_TAG=`node -e \"var manifest = require('./manifest.json');console.log(Object.keys(manifest.elements)[0]);\"`"
+    - "echo \"$CI_HUB_GROUP_TEST_DOMAIN/api/inner/bundle/create?key=$CI_HUB_GROUP_ELEMENTS_BUILD_KEY&bundle=element/$ELEMENT_TAG&version=latest&name=$ELEMENT_TITLE&branch=$CI_COMMIT_REF_NAME\""
     - "curl -X GET -H 'Content-type: application/json' \"$CI_HUB_GROUP_TEST_DOMAIN/api/inner/bundle/create?key=$CI_HUB_GROUP_ELEMENTS_BUILD_KEY&bundle=element/$ELEMENT_TAG&version=latest&name=$ELEMENT_TITLE&branch=$CI_COMMIT_REF_NAME\""
   tags:
     - docker
