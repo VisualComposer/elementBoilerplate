@@ -15,8 +15,8 @@
     "watch": "webpack --version && webpack --config=./node_modules/vc-webpack-vendors/webpack.v4.config.js --progress --colors --watch"
   },
   "devDependencies": {
-    "vc-webpack-vendors": "2.5.3",
-    "standard": "14.3.1"
+    "vc-webpack-vendors": "2.8.1",
+    "standard": "14.3.4"
   },
   "babel": {
     "presets": [
@@ -45,11 +45,11 @@
   },
   "resolutions": {
     "core-js": "3.2.1",
-    "postcss": "7.0.25",
-    "css-loader": "3.4.0",
+    "postcss": "7.0.32",
+    "css-loader": "4.2.2",
     "color-name": "1.1.4",
-    "eslint": "6.7.2",
-    "less": "3.10.3"
+    "eslint": "7.7.0",
+    "less": "3.12.2"
   },
   "browserslist": [
     ">1%",
