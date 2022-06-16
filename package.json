@@ -10,13 +10,12 @@
   },
   "scripts": {
     "standard": "standard --version && standard",
-    "build": "webpack --version && webpack --config=./node_modules/vc-webpack-vendors/webpack.v4.config.js --progress --colors",
-    "build-production": "webpack --version && webpack --config=./node_modules/vc-webpack-vendors/webpack.v4.config.production.js -p",
-    "watch": "webpack --version && webpack --config=./node_modules/vc-webpack-vendors/webpack.v4.config.js --progress --colors --watch"
+    "build": "webpack --version && webpack --config=./node_modules/vc-webpack-vendors/webpack.config.js",
+    "build-production": "webpack --version && webpack --config=./node_modules/vc-webpack-vendors/webpack.config.production.js",
+    "watch": "webpack --version && webpack --config=./node_modules/vc-webpack-vendors/webpack.config.js --watch"
   },
   "devDependencies": {
-    "vc-webpack-vendors": "2.8.1",
-    "standard": "14.3.4"
+    "vc-webpack-vendors": "3.1.1"
   },
   "babel": {
     "presets": [
@@ -44,12 +43,14 @@
     }
   },
   "resolutions": {
-    "core-js": "3.2.1",
-    "postcss": "7.0.32",
-    "css-loader": "4.2.2",
+    "core-js": "3.19.0",
+    "postcss": "8.3.11",
+    "css-loader": "6.5.0",
     "color-name": "1.1.4",
-    "eslint": "7.7.0",
-    "less": "3.12.2"
+    "eslint": "7.32.0",
+    "less": "4.1.2",
+    "raw-loader": "1.0.0",
+    "@babel/runtime": "7.15.4"
   },
   "browserslist": [
     ">1%",
