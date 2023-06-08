@@ -7,12 +7,11 @@ The element is the independent part of the system which represents HTML based bl
 The editor works with elements as React components. These components must be built with webpack and enqueued by API.
 Every element has preview, thumbnail, category and React-based component.
 
-### Element containment 
+### Element structure 
 
 Elements contains
 - manifest.json - describes element data, preview, thumbnail, category and php files.
 - package.json - npm install/update files for required node modules
-- webpack.config files to build a component with Webpack
 
 Directory {tag} (must be renamed to src):
 - index.js - the main file, build with Webpack
